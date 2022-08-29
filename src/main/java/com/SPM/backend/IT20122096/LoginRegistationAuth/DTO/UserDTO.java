@@ -1,12 +1,11 @@
-package com.SPM.backend.IT20122096.LoginRegistationAuth.Entity;
+package com.SPM.backend.IT20122096.LoginRegistationAuth.DTO;
 
 import lombok.*;
 import org.bson.types.ObjectId;
 
 import javax.validation.constraints.*;
 
-@Getter
-@Setter
+@Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,7 +1,7 @@
 package com.SPM.backend.IT20122096.LoginRegistationAuth.Service;
 
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.Admin;
-import com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.UserDTO;
+import com.SPM.backend.IT20122096.LoginRegistationAuth.DTO.UserDTO;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
@@ -57,7 +57,8 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         }
 
         if (userDTO.getIsAdmin()) {
-            com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User admin = new Admin(userDTO.getId(),userDTO.getName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getIsAdmin());
+            com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User admin = new Admin(
+                    userDTO.getId(),userDTO.getName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getIsAdmin());
             return new ResponseEntity(userRepository.save(admin), HttpStatus.OK);
         }
         com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User visitor = new com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User(

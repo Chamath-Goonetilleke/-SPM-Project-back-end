@@ -1,13 +1,12 @@
 package com.SPM.backend.IT20122096.LoginRegistationAuth.Controller;
 
+import com.SPM.backend.IT20122096.LoginRegistationAuth.DTO.UserDTO;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.*;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Repository.UserRepository;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Service.UserService;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Service.UserServiceImpl;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Utility.JWTUtility;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -4,8 +4,7 @@ package com.SPM.backend.IT20122096.LoginRegistationAuth.Entity;
 import lombok.*;
 import org.bson.types.ObjectId;
 
-@Setter
-@Getter
+@Data
 @ToString
 @NoArgsConstructor
 
