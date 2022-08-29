@@ -2,6 +2,7 @@ package com.SPM.backend.IT20122096.LoginRegistationAuth.Entity;
 
 
 import lombok.*;
+import org.bson.types.ObjectId;
 
 @Setter
 @Getter
@@ -11,8 +12,8 @@ import lombok.*;
 public class Admin extends User {
     private Boolean isAdmin=false;
 
-    public Admin(String name, String email, String password, Boolean isAdmin) {
-        super(name, email, password);
+    public Admin(ObjectId id, String name, String email, String password, Boolean isAdmin) {
+        super(id,name, email, password);
         this.isAdmin = isAdmin;
     }
 }
