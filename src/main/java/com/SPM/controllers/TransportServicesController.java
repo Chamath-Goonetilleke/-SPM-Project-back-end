@@ -1,9 +1,7 @@
 package com.SPM.controllers;
 
-import com.SPM.domains.TransportTypes;
-import com.SPM.services.TransportServices;
-import com.SPM.domains.TransportBusinessInformation;
-import com.SPM.types.RecordStatus;
+import com.SPM.domains.TransportServices;
+import com.SPM.services.ServiceTransportServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,78 +11,74 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/transport-services")
 @Slf4j
 public class TransportServicesController {
 
-    private final TransportServices transportServices;
+    private final ServiceTransportServices serviceTransportServices;
 
     @Autowired
-    public TransportServicesController(TransportServices transportServices) {
-        this.transportServices = transportServices;
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<List<TransportBusinessInformation>> getAllTransportServices() {
-        try {
-            return new ResponseEntity<>(transportServices.getAllTransportBusinessInformation(), HttpStatus.FOUND);
-        } catch (Exception e) {
-            log.error("Error occurred while fetching all the transport services: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+    public TransportServicesController(ServiceTransportServices serviceTransportServices) {
+        this.serviceTransportServices = serviceTransportServices;
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<TransportBusinessInformation>> searchTransportServices(@RequestParam String searchString) {
+    public ResponseEntity<List<TransportServices>> searchTransportServices(@RequestParam String searchString) {
         try {
-            return new ResponseEntity<>(transportServices.searchTransportServices(searchString), HttpStatus.FOUND);
+            return new ResponseEntity<>(serviceTransportServices.searchTransportServices(searchString), HttpStatus.FOUND);
         } catch (Exception e) {
             log.error("Error occurred while searching transport services: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
-    @GetMapping("/transport-service")
-    public ResponseEntity<TransportBusinessInformation> getTransportService(@RequestParam String id) {
+    @GetMapping("/requested")
+    public ResponseEntity<List<TransportServices>> getRequestedTransportServices() {
         try {
-            return new ResponseEntity<>(transportServices.getTransportBusinessInformation(id), HttpStatus.FOUND);
+            return new ResponseEntity<>(serviceTransportServices.getRequestedTransportServicesInformation(), HttpStatus.FOUND);
         } catch (Exception e) {
-            log.error("Error occurred while fetching all the transport services: {}", e.getMessage());
+            log.error("Error occurred while fetching all requested the transport services: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
-    @PostMapping("/add-business-information")
-    public ResponseEntity<TransportBusinessInformation> addBusinessInformation(
-            @RequestBody TransportBusinessInformation businessInformation) {
+    @PutMapping("/approve")
+    public ResponseEntity<TransportServices> approveTransportService(@RequestParam String id) {
         try {
-            return new ResponseEntity<>(transportServices.addBusinessInformation(businessInformation),
-                    HttpStatus.CREATED);
+            return new ResponseEntity<>(serviceTransportServices.approveTransportService(id), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error occurred while fetching approved transport service: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PutMapping("/decline")
+    public ResponseEntity<TransportServices> declineTransportService(@RequestParam String id) {
+        try {
+            return new ResponseEntity<>(serviceTransportServices.declineTransportService(id), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error occurred while fetching declined transport service: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @GetMapping("/registered")
+    public ResponseEntity<List<TransportServices>> getTransportService() {
+        try {
+            return new ResponseEntity<>(serviceTransportServices.getRegisteredTransportServicesInformation(), HttpStatus.FOUND);
+        } catch (Exception e) {
+            log.error("Error occurred while fetching all registered transport services: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<TransportServices> addBusinessInformation(@RequestBody TransportServices businessInformation) {
+        try {
+            return new ResponseEntity<>(serviceTransportServices.addTransportService(businessInformation), HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error occurred while saving business information: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PostMapping("/add-transport-services")
-    public ResponseEntity<List<TransportTypes>> addTransportInformation(
-            @RequestBody TransportTypes[] transportTypes) {
-        try {
-            return new ResponseEntity<>(transportServices.addTransportTypes(transportTypes),
-                    HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.error("Error occurred while saving transport information: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("/update-status")
-    public ResponseEntity<TransportBusinessInformation> changeRecordStatus(@RequestParam String id,
-                                                                           @RequestParam RecordStatus status) {
-        try {
-            return new ResponseEntity<>(transportServices.updateRecordStatus(id, status), HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("Error occurred while updating record status: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
