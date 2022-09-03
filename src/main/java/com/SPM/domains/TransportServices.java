@@ -1,6 +1,5 @@
 package com.SPM.domains;
 
-import com.SPM.types.RecordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -17,19 +16,17 @@ public class TransportServices {
 
     private String companyName;
 
-    private String companyAddress;
-
-    private String companyEmail;
+    private String companyEmailAddress;
 
     private String companyHotline;
-
-    private RecordStatus isApproved;
 
     private String landTransport;
 
     private String airTransport;
 
-    private String waterLocations;
+    private String waterTransport;
 
     private String locations;
+
+    private boolean isApproved;
 }

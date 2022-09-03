@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
-@RequestMapping("/transport-services")
+//@CrossOrigin(origins = "*", methods = {RequestMethod.OPTIONS, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT}, allowedHeaders = "*")
+@RequestMapping(path = "/transport-services")
 @Slf4j
 public class TransportServicesController {
 
@@ -56,7 +56,8 @@ public class TransportServicesController {
     @PutMapping("/decline")
     public ResponseEntity<TransportServices> declineTransportService(@RequestParam String id) {
         try {
-            return new ResponseEntity<>(serviceTransportServices.declineTransportService(id), HttpStatus.OK);
+            serviceTransportServices.declineTransportService(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error occurred while fetching declined transport service: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -74,11 +75,11 @@ public class TransportServicesController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<TransportServices> addBusinessInformation(@RequestBody TransportServices businessInformation) {
+    public ResponseEntity<TransportServices> addTransportService(@RequestBody TransportServices businessInformation) {
         try {
             return new ResponseEntity<>(serviceTransportServices.addTransportService(businessInformation), HttpStatus.CREATED);
         } catch (Exception e) {
-            log.error("Error occurred while saving business information: {}", e.getMessage());
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

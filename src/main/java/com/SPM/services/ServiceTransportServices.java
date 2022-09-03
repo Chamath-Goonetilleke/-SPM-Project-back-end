@@ -1,11 +1,10 @@
 package com.SPM.services;
 
+import com.SPM.domains.TransportServices;
 import com.SPM.repository.TransportServicesRepository;
-import com.SPM.types.RecordStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,29 +20,28 @@ public class ServiceTransportServices {
 
     public List<com.SPM.domains.TransportServices> getRequestedTransportServicesInformation() {
         List<com.SPM.domains.TransportServices> businesses = transportServicesRepository.findAll();
-        return businesses.stream().filter(b -> b.getIsApproved().equals(RecordStatus.PENDING)).collect(Collectors.toList());
+        return businesses.stream().filter(b -> !b.isApproved()).collect(Collectors.toList());
     }
 
     public List<com.SPM.domains.TransportServices> getRegisteredTransportServicesInformation() {
         List<com.SPM.domains.TransportServices> transportService = transportServicesRepository.findAll();
-        return transportService.stream().filter(b -> b.getIsApproved().equals(RecordStatus.APPROVED)).collect(Collectors.toList());
+        return transportService.stream().filter(TransportServices::isApproved).collect(Collectors.toList());
     }
 
     public com.SPM.domains.TransportServices approveTransportService(String id) throws Exception {
         Optional<com.SPM.domains.TransportServices> transportService = transportServicesRepository.findById(id);
         if (transportService.isPresent()) {
-            transportService.get().setIsApproved(RecordStatus.APPROVED);
+            transportService.get().setApproved(true);
             return transportServicesRepository.save(transportService.get());
         } else {
             throw new Exception("Record not found");
         }
     }
 
-    public com.SPM.domains.TransportServices declineTransportService(String id) throws Exception {
+    public void declineTransportService(String id) throws Exception {
         Optional<com.SPM.domains.TransportServices> transportService = transportServicesRepository.findById(id);
         if (transportService.isPresent()) {
-            transportService.get().setIsApproved(RecordStatus.REJECTED);
-            return transportServicesRepository.save(transportService.get());
+            transportServicesRepository.deleteById(id);
         } else {
             throw new Exception("Record not found");
         }
@@ -52,15 +50,15 @@ public class ServiceTransportServices {
     public com.SPM.domains.TransportServices addTransportService(
             com.SPM.domains.TransportServices transportService) throws Exception {
         List<com.SPM.domains.TransportServices> list = transportServicesRepository.findAll();
-        if (list.stream().anyMatch(o -> o.getCompanyEmail().equals(transportService.getCompanyEmail()))) {
+        if (list.stream().anyMatch(o -> o.getCompanyEmailAddress().equals(transportService.getCompanyEmailAddress()))) {
             throw new Exception("Business already exists");
         }
-        transportService.setIsApproved(RecordStatus.PENDING);
+        transportService.setApproved(false);
         return transportServicesRepository.save(transportService);
     }
 
     public List<com.SPM.domains.TransportServices> searchTransportServices(String searchString) {
-        return transportServicesRepository.findTransportBusinessInformationByCompanyNameLikeOrCompanyEmailLike(searchString, searchString);
+        return transportServicesRepository.findTransportServicesByCompanyEmailAddressOrCompanyName(searchString, searchString);
     }
 
 }
