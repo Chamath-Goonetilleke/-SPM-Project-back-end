@@ -1,46 +1,46 @@
 package com.SPM.backend.IT20122614.model;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+@Document("hotel")
 public class Hotel {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Integer id;
 
+    @Field(name = "type")
     private String type;
+
+    @Field(name = "name")
+    @Id
     private String name;
+    @Field(name = "description")
     private String description;
+    @Field(name = "address")
     private String address;
+    @Field(name = "city")
     private String city;
+    @Field(name = "imageURL")
     private String imageURL;
-    private String roomType;
-    private String facilities;
-    private float price;
+
+    @Field(name = "rooms")
+    private Room[] room;
 
     public Hotel() {
     }
 
-    public Hotel(String type, String name, String description, String address, String city, String imageURL, String roomType, String facilities, float price) {
+    public Hotel(String type, String name, String description, String address, String city, String imageURL, Room[] room) {
         this.type = type;
         this.name = name;
         this.description = description;
         this.address = address;
         this.city = city;
         this.imageURL = imageURL;
-        this.roomType = roomType;
-        this.facilities = facilities;
-        this.price = price;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        this.room = room;
     }
 
     public String getType() {
@@ -91,27 +91,12 @@ public class Hotel {
         this.imageURL = imageURL;
     }
 
-    public String getRoomType() {
-        return roomType;
+    public Room[] getRoom() {
+        return room;
     }
 
-    public void setRoomType(String roomType) {
-        this.roomType = roomType;
-    }
-
-    public String getFacilities() {
-        return facilities;
-    }
-
-    public void setFacilities(String facilities) {
-        this.facilities = facilities;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
+    public void setRoom(Room[] room) {
+        this.room = room;
     }
 }
+
