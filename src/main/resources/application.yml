@@ -1,0 +1,32 @@
+
+#spring.data.mongodb.host=localhost
+#spring.data.mongodb.port=27017
+#spring.data.mongodb.database=spm_project
+spring:
+  data:
+   mongodb:
+    uri: mongodb+srv://IT20122096:ivv00mZCwNSqeeff@itp.02s4w.mongodb.net/trip_planning_management?retryWrites=true&w=majority
+   rest:
+     base-path: /api/v1
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+
+cloud:
+ aws:
+  credentials:
+   accessKey: AKIATLDU7GX2BV7HEULE
+   secretKey: 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
+  region:
+    static: us-west-2
+  stack:
+    auto: false
+
+application:
+  bucket:
+    name: spmuserbucket
+  secret: secretkey123

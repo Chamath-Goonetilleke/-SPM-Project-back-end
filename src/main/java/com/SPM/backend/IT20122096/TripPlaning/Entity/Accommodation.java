@@ -3,17 +3,17 @@ package com.SPM.backend.IT20122096.TripPlaning.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Accommodation {
-    private String name;
+    private ObjectId id;
     private Integer numOfMembers;
     private List<Room> rooms;
-    private String checkingDate;
-    private String checkoutDate;
+    private double total;
 
 }
 

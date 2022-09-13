@@ -1,6 +1,7 @@
 package com.SPM.backend.IT20122096.LoginRegistationAuth.Controller;
 
-import com.SPM.backend.IT20122096.LoginRegistationAuth.DTO.UserDTO;
+import com.SPM.backend.IT20122096.LoginRegistationAuth.DTO.UserRegisterDTO;
+import com.SPM.backend.IT20122096.LoginRegistationAuth.DTO.UserUpdateDTO;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.*;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Repository.UserRepository;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Service.UserService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/api/v1")
 public class UserController {
     private final UserRepository userRepository;
     private final JWTUtility jwtUtility;
@@ -33,6 +35,7 @@ public class UserController {
     @PostMapping("/auth")
     public JWTResponse authenticate(@RequestBody JWTRequest jwtRequest) throws Exception {
         try {
+            User user = new User();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             jwtRequest.getUsername(),
@@ -47,12 +50,6 @@ public class UserController {
 
         return new JWTResponse(token);
     }
-
-    @PostMapping("/user/save")
-    public ResponseEntity saveUser(@Valid @RequestBody UserDTO userDTO) {
-       return userService.saveUser(userDTO);
-    }
-
     @GetMapping("/user/getAll")
     public ResponseEntity getAllUsers() {
         return userService.getAllUsers();
@@ -61,4 +58,16 @@ public class UserController {
     public ResponseEntity getUserById(@PathVariable ObjectId id) {
         return userService.getUserById(id);
     }
+    @PostMapping("/user/save")
+    public ResponseEntity saveUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
+       return userService.saveUser(userRegisterDTO);
+    }
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PutMapping("/user/update")
+    public ResponseEntity updateUser(@Valid @RequestBody UserUpdateDTO userUpdateDTO){
+        return userService.updateUser(userUpdateDTO);
+    }
+
+
+
 }

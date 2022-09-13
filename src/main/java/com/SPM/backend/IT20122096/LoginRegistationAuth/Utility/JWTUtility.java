@@ -1,8 +1,13 @@
 package com.SPM.backend.IT20122096.LoginRegistationAuth.Utility;
 
+import com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User;
+import com.SPM.backend.IT20122096.LoginRegistationAuth.Repository.UserRepository;
+import com.SPM.backend.IT20122096.LoginRegistationAuth.Service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -17,10 +22,11 @@ import java.util.function.Function;
 public class JWTUtility implements Serializable {
 
     private static final long serialVersionUID = 234234523523L;
-
+@Autowired
+private UserService userService;
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
-    @Value("${jwt.secret}")
+    @Value("${application.secret}")
     private String secretKey;
 
     //retrieve username from jwt token
@@ -55,7 +61,9 @@ public class JWTUtility implements Serializable {
 
     //generate token for user
     public String generateToken(UserDetails userDetails) {
+
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId",userService.getUserByEmail(userDetails.getUsername()));
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
