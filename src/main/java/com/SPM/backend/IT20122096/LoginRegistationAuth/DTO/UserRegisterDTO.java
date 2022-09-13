@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserRegisterDTO {
 
     private ObjectId id;
     @NotNull(message = "Name is Mandatory")

@@ -3,11 +3,10 @@ package com.SPM.backend.IT20122096.LoginRegistationAuth.Entity;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 @Data
 @ToString
@@ -21,5 +20,20 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private String address;
+    private String phoneNumber;
+    private String image;
+
+    public String passwordEncoder(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password);
+        return encodedPassword;
+    }
+
+    public boolean isPasswordMatch(String password, String encodedPassword){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return (passwordEncoder.matches(password,encodedPassword));
+    }
+
 
 }
