@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +22,5 @@ public class TripPlanDTO {
     private Accommodation accommodation;
     private Transportation transportation;
     private double totalCost;
+    private boolean isBooked = false;
 }

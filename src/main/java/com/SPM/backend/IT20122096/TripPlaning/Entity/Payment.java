@@ -12,18 +12,9 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class TripPlan {
+public class Payment {
     @Id
     private ObjectId id;
-    private ObjectId userId;
-    private String name;
-    private String type;
-    private String startDate;
-    private String endDate;
-    private Place place;
-    private Accommodation accommodation;
-    private Transportation transportation;
-    private double totalCost;
-    private boolean isBooked=false;
-
+    private ObjectId tripPlanId;
+    private double amount;
 }
