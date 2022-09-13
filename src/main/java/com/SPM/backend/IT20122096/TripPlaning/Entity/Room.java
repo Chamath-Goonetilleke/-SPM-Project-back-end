@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Room {
     private Integer roomNumber;
-    private String category;
+    private String roomType;
     private Integer capacity;
     private double price;
 }

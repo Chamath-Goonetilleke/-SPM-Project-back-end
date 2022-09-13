@@ -1,5 +1,6 @@
 package com.SPM.backend.IT20122096.TripPlaning.Service;
 
+import com.SPM.backend.IT20122096.TripPlaning.DTO.PaymentDTO;
 import com.SPM.backend.IT20122096.TripPlaning.DTO.TripPlanDTO;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.TripPlan;
 import org.bson.types.ObjectId;
@@ -16,4 +17,6 @@ public interface TripPlanService {
     ResponseEntity updateTripPlanById(ObjectId tripId);
 
     ResponseEntity deleteTripPlanById(ObjectId tripId);
+
+    ResponseEntity payForTripPlan(PaymentDTO paymentDTO);
 }

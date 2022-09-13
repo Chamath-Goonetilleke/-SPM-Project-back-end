@@ -14,6 +14,8 @@ public class Accommodation {
     private Integer numOfMembers;
     private List<Room> rooms;
     private double total;
+    private String image;
+    private String name;
 
 }
 

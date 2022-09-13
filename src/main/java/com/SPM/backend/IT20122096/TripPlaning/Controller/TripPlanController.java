@@ -1,5 +1,6 @@
 package com.SPM.backend.IT20122096.TripPlaning.Controller;
 
+import com.SPM.backend.IT20122096.TripPlaning.DTO.PaymentDTO;
 import com.SPM.backend.IT20122096.TripPlaning.DTO.TripPlanDTO;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.TripPlan;
 import com.SPM.backend.IT20122096.TripPlaning.Service.TripPlanService;
@@ -41,5 +42,8 @@ public class TripPlanController {
     public ResponseEntity deleteTripPlanById(@PathVariable ObjectId tripId) {
         return tripPlanService.deleteTripPlanById(tripId);
     }
-
+    @PostMapping("/tripPlan/pay")
+    public ResponseEntity payForTripPlan(@RequestBody PaymentDTO paymentDTO) {
+        return tripPlanService.payForTripPlan(paymentDTO);
+    }
 }
