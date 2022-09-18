@@ -48,5 +48,10 @@ public class HotelController {
         expenseService.addExpense(expense);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+//    @PostMapping("/delete")
+//    public ResponseEntity<?> delete(){
+//
+//
+//    }
 
 }
