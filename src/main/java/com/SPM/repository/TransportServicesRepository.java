@@ -8,5 +8,9 @@ import java.util.List;
 
 @Repository
 public interface TransportServicesRepository extends MongoRepository<TransportServices, String> {
-    List<TransportServices> findTransportServicesByCompanyEmailAddressOrCompanyName(String companyName, String companyEmail);
+    List<TransportServices> findTransportServicesByCompanyEmailAddressContainsIgnoreCaseOrCompanyNameContainsIgnoreCase(String companyName, String companyEmail);
+
+    TransportServices findTransportServicesByCompanyEmailAddress(String emailAddress);
+
+    void deleteByCompanyEmailAddress(String emailAddress);
 }

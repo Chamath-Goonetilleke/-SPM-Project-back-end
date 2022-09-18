@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "*", methods = {RequestMethod.OPTIONS, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT}, allowedHeaders = "*")
 @RequestMapping(path = "/transport-services")
 @Slf4j
 public class TransportServicesController {
@@ -27,6 +26,21 @@ public class TransportServicesController {
     public ResponseEntity<List<TransportServices>> searchTransportServices(@RequestParam String searchString) {
         try {
             return new ResponseEntity<>(serviceTransportServices.searchTransportServices(searchString), HttpStatus.FOUND);
+        } catch (Exception e) {
+            log.error("Error occurred while searching transport services: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @GetMapping("search/registered")
+    public ResponseEntity<TransportServices> searchSingleTransportServiceById(@RequestParam String searchString) {
+        try {
+            TransportServices transportService = serviceTransportServices.searchTransportServiceByEmailAddress(searchString);
+            if (transportService != null) {
+                return new ResponseEntity<>(serviceTransportServices.searchTransportServiceByEmailAddress(searchString), HttpStatus.FOUND);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
         } catch (Exception e) {
             log.error("Error occurred while searching transport services: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -77,6 +91,7 @@ public class TransportServicesController {
     @PostMapping("/add")
     public ResponseEntity<TransportServices> addTransportService(@RequestBody TransportServices businessInformation) {
         try {
+            log.info("{}", businessInformation);
             return new ResponseEntity<>(serviceTransportServices.addTransportService(businessInformation), HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
