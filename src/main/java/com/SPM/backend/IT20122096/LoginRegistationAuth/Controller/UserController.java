@@ -1,5 +1,6 @@
 package com.SPM.backend.IT20122096.LoginRegistationAuth.Controller;
 
+import com.SPM.backend.IT20122096.Common.BaseController;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.DTO.UserRegisterDTO;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.DTO.UserUpdateDTO;
 import com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.*;
@@ -18,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1")
-public class UserController {
+public class UserController extends BaseController {
     private final UserRepository userRepository;
     private final JWTUtility jwtUtility;
     private AuthenticationManager authenticationManager;
