@@ -1,5 +1,6 @@
 package com.SPM.backend.IT20122096.TravelPackage.Controller;
 
+import com.SPM.backend.IT20122096.Common.BaseController;
 import com.SPM.backend.IT20122096.TravelPackage.DTO.TravelPackageDTO;
 import com.SPM.backend.IT20122096.TravelPackage.Service.TravelPackageService;
 import org.bson.types.ObjectId;
@@ -7,8 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
-public class TravelPackageController {
+public class TravelPackageController extends BaseController {
 
     private TravelPackageService travelPackageService;
 

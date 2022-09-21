@@ -1,5 +1,6 @@
 package com.SPM.backend.IT20122096.TripPlaning.Controller;
 
+import com.SPM.backend.IT20122096.Common.BaseController;
 import com.SPM.backend.IT20122096.TripPlaning.DTO.PaymentDTO;
 import com.SPM.backend.IT20122096.TripPlaning.DTO.TripPlanDTO;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.TripPlan;
@@ -9,8 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
-public class TripPlanController {
+public class TripPlanController extends BaseController {
 
     private final TripPlanService tripPlanService;
 
