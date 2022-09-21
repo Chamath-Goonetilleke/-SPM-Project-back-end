@@ -1,21 +1,25 @@
-package com.SPM.backend.IT20122096.TripPlaning.Entity;
+package com.SPM.backend.IT20122096.Transport.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Transportation {
-
+public class Transport {
+    @Id
     private ObjectId id;
     private String name;
-    private String image;
-    private String numOfKilometers;
+    private String district;
+    private String description;
+    private String imageURL;
     private List<Vehicle> vehicles;
-    private double total;
+
+
+
 }

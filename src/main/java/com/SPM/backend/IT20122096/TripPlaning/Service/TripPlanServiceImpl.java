@@ -1,6 +1,13 @@
 package com.SPM.backend.IT20122096.TripPlaning.Service;
 
+import com.SPM.backend.IT20122096.Transport.Entity.Transport;
+import com.SPM.backend.IT20122096.Transport.Repository.TransportRepository;
+import com.SPM.backend.IT20122096.TravelPackage.Entity.TravelPackage;
+import com.SPM.backend.IT20122096.TravelPackage.Repository.TravelPackageRepository;
+import com.SPM.backend.IT20122096.TravelPackage.Service.TravelPackageService;
+import com.SPM.backend.IT20122096.TripPlaning.DTO.BookingsDTO;
 import com.SPM.backend.IT20122096.TripPlaning.DTO.PaymentDTO;
+import com.SPM.backend.IT20122096.TripPlaning.DTO.PaymentResponseDTO;
 import com.SPM.backend.IT20122096.TripPlaning.DTO.TripPlanDTO;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.*;
 import com.SPM.backend.IT20122096.TripPlaning.Repository.PaymentRepository;
@@ -11,6 +18,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,11 +30,17 @@ public class TripPlanServiceImpl implements TripPlanService {
     private final TripPlanRepository tripPlanRepository;
     private final HotelRepository hotelRepository;
     private final PaymentRepository paymentRepository;
+    private final TransportRepository transportRepository;
+    private final TravelPackageService travelPackageService;
+    private final TravelPackageRepository travelPackageRepository;
 
-    public TripPlanServiceImpl(TripPlanRepository tripPlanRepository, HotelRepository hotelRepository, PaymentRepository paymentRepository) {
+    public TripPlanServiceImpl(TripPlanRepository tripPlanRepository, HotelRepository hotelRepository, PaymentRepository paymentRepository, TransportRepository transportRepository, TravelPackageService travelPackageService, TravelPackageRepository travelPackageRepository) {
         this.tripPlanRepository = tripPlanRepository;
         this.hotelRepository = hotelRepository;
         this.paymentRepository = paymentRepository;
+        this.transportRepository = transportRepository;
+        this.travelPackageService = travelPackageService;
+        this.travelPackageRepository = travelPackageRepository;
     }
 
     @Override
@@ -63,17 +77,81 @@ public class TripPlanServiceImpl implements TripPlanService {
         List<TripPlan> tripPlans = tripPlanRepository.getTripPlanByUserId(userId);
 
         List<TripPlan> fullTripPlan = new ArrayList<>();
-        for (TripPlan plan:tripPlans
-             ) {
+        for (TripPlan plan : tripPlans
+        ) {
             TripPlan tripPlan = plan;
             Hotel hotel = hotelRepository.findById(tripPlan.getAccommodation().getId()).get();
             tripPlan.getAccommodation().setImage(hotel.getImageURL());
             tripPlan.getAccommodation().setName(hotel.getName());
 
+            Transport transport = transportRepository.findById(tripPlan.getTransportation().getId()).get();
+            tripPlan.getTransportation().setImage(transport.getImageURL());
+            tripPlan.getTransportation().setName(transport.getName());
+
             fullTripPlan.add(tripPlan);
         }
 
         return new ResponseEntity(fullTripPlan, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getAllBookings(ObjectId userId) {
+        List<TripPlan> tripPlans = tripPlanRepository.getBookedTripPlanByUserId(userId);
+
+        List<TripPlan> fullTripPlan = new ArrayList<>();
+        for (TripPlan plan : tripPlans
+        ) {
+            TripPlan tripPlan = plan;
+            Hotel hotel = hotelRepository.findById(tripPlan.getAccommodation().getId()).get();
+            tripPlan.getAccommodation().setImage(hotel.getImageURL());
+            tripPlan.getAccommodation().setName(hotel.getName());
+
+            Transport transport = transportRepository.findById(tripPlan.getTransportation().getId()).get();
+            tripPlan.getTransportation().setImage(transport.getImageURL());
+            tripPlan.getTransportation().setName(transport.getName());
+
+            fullTripPlan.add(tripPlan);
+        }
+        List<Payment> payments = paymentRepository.getPaymentByUserId(userId);
+        List<TravelPackage> travelPackages = (List<TravelPackage>) travelPackageService.getAllPackages().getBody();
+        List<TravelPackage> bookedPackages = new ArrayList<>();
+        for (TravelPackage travelPackage:travelPackages
+             ) {
+            for (Payment payment:payments
+                 ) {
+                if((payment.getTripPlanId().equals(travelPackage.getId()))){
+                    bookedPackages.add(travelPackage);
+                }
+            }
+        }
+        BookingsDTO bookingsDTO = new BookingsDTO(fullTripPlan,bookedPackages);
+
+
+        return new ResponseEntity(bookingsDTO, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity getAllPayments(ObjectId userId) {
+        List<Payment> payments = paymentRepository.getPaymentByUserId(userId);
+        List<PaymentResponseDTO> paymentDTOS = new ArrayList<>();
+        for (Payment payment: payments
+             ) {
+            PaymentResponseDTO paymentResponseDTO = new PaymentResponseDTO();
+            paymentResponseDTO.setType(payment.getType());
+            paymentResponseDTO.setAmount(payment.getAmount());
+            paymentResponseDTO.setDate(payment.getDate());
+
+            if(payment.getType().equals("Trip Plan")){
+                TripPlan tripPlan = tripPlanRepository.findById(payment.getTripPlanId()).get();
+                paymentResponseDTO.setName(tripPlan.getName());
+            }
+            else {
+                TravelPackage travelPackage = travelPackageRepository.findById(payment.getTripPlanId()).get();
+                paymentResponseDTO.setName(travelPackage.getName());
+            }
+            paymentDTOS.add(paymentResponseDTO);
+        }
+        return new ResponseEntity(paymentDTOS, HttpStatus.OK);
     }
 
     @Override
@@ -104,13 +182,18 @@ public class TripPlanServiceImpl implements TripPlanService {
         Payment payment = new Payment();
         payment.setTripPlanId(paymentDTO.getTripPlanId());
         payment.setAmount(paymentDTO.getAmount());
+        payment.setType(paymentDTO.getType());
+        payment.setDate(paymentDTO.getDate());
+        payment.setUserId(paymentDTO.getUserId());
 
         paymentRepository.save(payment);
 
-        TripPlan tripPlan = tripPlanRepository.findById(paymentDTO.getTripPlanId()).get();
-        tripPlan.setBooked(true);
-        tripPlanRepository.save(tripPlan);
+        if (paymentDTO.getType().equals("Trip Plan")) {
+            TripPlan tripPlan = tripPlanRepository.findById(paymentDTO.getTripPlanId()).get();
+            tripPlan.setBooked(true);
+            tripPlanRepository.save(tripPlan);
+        }
 
-        return new ResponseEntity("Payment Success",HttpStatus.OK);
+        return new ResponseEntity("Payment Success", HttpStatus.OK);
     }
 }

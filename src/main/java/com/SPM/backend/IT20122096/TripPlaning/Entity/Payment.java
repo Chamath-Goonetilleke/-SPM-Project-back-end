@@ -16,5 +16,8 @@ public class Payment {
     @Id
     private ObjectId id;
     private ObjectId tripPlanId;
+    private ObjectId userId;
+    private String type;
+    private String date;
     private double amount;
 }

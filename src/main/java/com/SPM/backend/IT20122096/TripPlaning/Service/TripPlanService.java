@@ -11,7 +11,8 @@ public interface TripPlanService {
     ResponseEntity saveTripPlan(TripPlan tripPlan);
 
     ResponseEntity getAllTripPlans(ObjectId userId);
-
+    ResponseEntity getAllBookings(ObjectId userId);
+    ResponseEntity getAllPayments(ObjectId userId);
     ResponseEntity getTripPlanById(ObjectId tripId);
 
     ResponseEntity updateTripPlanById(ObjectId tripId);
