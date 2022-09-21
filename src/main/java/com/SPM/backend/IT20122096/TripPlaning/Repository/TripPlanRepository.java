@@ -13,4 +13,6 @@ public interface TripPlanRepository extends MongoRepository<TripPlan, ObjectId> 
 
     @Query("{'userId':?0}")
     List<TripPlan> getTripPlanByUserId(ObjectId userId);
+    @Query("{'userId':?0,'isBooked': true}")
+    List<TripPlan> getBookedTripPlanByUserId(ObjectId userId);
 }

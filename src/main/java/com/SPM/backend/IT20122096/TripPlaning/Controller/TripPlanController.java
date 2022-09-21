@@ -27,6 +27,14 @@ public class TripPlanController {
     public ResponseEntity getAllTripPlans(@PathVariable ObjectId userId) {
         return tripPlanService.getAllTripPlans(userId);
     }
+    @GetMapping("/tripPlan/getAllBookings/{userId}")
+    public ResponseEntity getAllBookings(@PathVariable ObjectId userId) {
+        return tripPlanService.getAllBookings(userId);
+    }
+    @GetMapping("/tripPlan/getAllPayments/{userId}")
+    public ResponseEntity getAllPayments(@PathVariable ObjectId userId) {
+        return tripPlanService.getAllPayments(userId);
+    }
 
     @PostMapping("/tripPlan/save")
     public ResponseEntity saveTripPlan(@RequestBody TripPlan tripPlan) {
