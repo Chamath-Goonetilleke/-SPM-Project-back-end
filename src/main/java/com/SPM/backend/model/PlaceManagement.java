@@ -17,11 +17,15 @@ public class PlaceManagement {
 
     private boolean approved;
 
+    private boolean favorite;
+
+    private Object[] otherPlacesArray;
+
     public PlaceManagement() {
 
     }
 
-    public PlaceManagement(String name, String image, String location, String rating, String description, float ratingCount, boolean approved) {
+    public PlaceManagement(String name, String image, String location, String rating, String description, float ratingCount, boolean approved, boolean favorite, Object[] otherPlacesArray) {
         this.name = name;
         this.image = image;
         this.location = location;
@@ -29,6 +33,8 @@ public class PlaceManagement {
         this.description = description;
         this.ratingCount = ratingCount;
         this.approved = approved;
+        this.favorite = favorite;
+        this.otherPlacesArray = otherPlacesArray;
     }
 
     public String getId() {
@@ -98,5 +104,21 @@ public class PlaceManagement {
 
     public void setRatingCount(float ratingCount) {
         this.ratingCount = ratingCount;
+    }
+
+    public Object[] getOtherPlacesArray() {
+        return otherPlacesArray;
+    }
+
+    public void setOtherPlacesArray(Object[] otherPlacesArray) {
+        this.otherPlacesArray = otherPlacesArray;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public interface PlaceManagementRepository extends MongoRepository<PlaceManagement, String> {
     List<PlaceManagement> findByNameContaining(String name);
     List<PlaceManagement> findByApproved(boolean approved);
-
+    List<PlaceManagement> findByFavorite(boolean favorite);
 
 }
 
