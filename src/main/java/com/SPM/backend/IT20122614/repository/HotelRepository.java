@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-
 public interface HotelRepository extends MongoRepository<Hotel, ObjectId> {
 
     Hotel findHotelById(String name);
@@ -17,6 +16,5 @@ public interface HotelRepository extends MongoRepository<Hotel, ObjectId> {
     void deleteHotelById(String name);
 //    void findByIdAndUpdate(String id, Hotel hotel);
 //    void findAndModify({query: {id: id})
-
 
 }

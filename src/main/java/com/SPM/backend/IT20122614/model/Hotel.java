@@ -1,7 +1,5 @@
 package com.SPM.backend.IT20122614.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,8 +11,6 @@ import javax.persistence.Id;
 
 @Entity
 @Document("hotel")
-@Data
-@AllArgsConstructor
 public class Hotel {
 
     @Id
@@ -50,6 +46,68 @@ public class Hotel {
         this.room = room;
     }
 
+    public ObjectId getId() {
+        return id;
+    }
 
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public Room[] getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room[] room) {
+        this.room = room;
+    }
 }
 
