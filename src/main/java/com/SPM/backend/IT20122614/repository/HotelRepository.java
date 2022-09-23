@@ -8,4 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HotelRepository extends MongoRepository<Hotel, Integer> {
 
+    Hotel findHotelById(String name);
+
+    void deleteHotelById(String name);
+//    void findByIdAndUpdate(String id, Hotel hotel);
+//    void findAndModify({query: {id: id})
 }

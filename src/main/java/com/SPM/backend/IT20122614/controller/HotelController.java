@@ -44,14 +44,29 @@ public class HotelController {
     }
     @PostMapping("/add")
     public ResponseEntity<?> addExpense(@RequestBody Expense expense){
-        System.out.println("vnjccccccccccccccccccccccccccccccccccccccd");
+//        System.out.println("vnjccccccccccccccccccccccccccccccccccccccd");
         expenseService.addExpense(expense);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-//    @PostMapping("/delete")
-//    public ResponseEntity<?> delete(){
-//
-//
-//    }
+    @GetMapping("/edit/{name}")
+    public ResponseEntity<?> getSingleEditDetails(@PathVariable String name) {
+        return ResponseEntity.ok(hotelService.getHotelsById(name));
+    }
+    @PostMapping("/update-hotel/{name}")
+    public ResponseEntity<?> updateHotelDetails(@RequestBody Hotel hotel, @PathVariable String name) {
+
+         hotelService.updateHotelDetails(name, hotel);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> deleteHotel(@PathVariable String id){
+
+        System.out.println("delete" + id);
+        hotelService.deleteHotelDetails(id);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+
+
+    }
+
 
 }

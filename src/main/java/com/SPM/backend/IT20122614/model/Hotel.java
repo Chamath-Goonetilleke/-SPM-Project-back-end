@@ -12,6 +12,8 @@ import javax.persistence.Id;
 @Document("hotel")
 public class Hotel {
 
+    @Id
+    private String id;
     @Field(name = "type")
     private String type;
 
@@ -41,6 +43,25 @@ public class Hotel {
         this.city = city;
         this.imageURL = imageURL;
         this.room = room;
+    }
+
+    public Hotel(String id, String type, String name, String description, String address, String city, String imageURL, Room[] room) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.description = description;
+        this.address = address;
+        this.city = city;
+        this.imageURL = imageURL;
+        this.room = room;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getType() {
