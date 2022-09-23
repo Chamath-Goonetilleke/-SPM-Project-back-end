@@ -1,5 +1,6 @@
 package com.SPM.backend.IT20122614.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,12 +14,12 @@ import javax.persistence.Id;
 public class Hotel {
 
     @Id
-    private String id;
+    private ObjectId id;
     @Field(name = "type")
     private String type;
 
     @Field(name = "name")
-    @Id
+
     private String name;
     @Field(name = "description")
     private String description;
@@ -45,22 +46,11 @@ public class Hotel {
         this.room = room;
     }
 
-    public Hotel(String id, String type, String name, String description, String address, String city, String imageURL, Room[] room) {
-        this.id = id;
-        this.type = type;
-        this.name = name;
-        this.description = description;
-        this.address = address;
-        this.city = city;
-        this.imageURL = imageURL;
-        this.room = room;
-    }
-
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
