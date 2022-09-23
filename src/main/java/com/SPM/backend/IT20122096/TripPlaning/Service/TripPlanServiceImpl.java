@@ -1,5 +1,7 @@
 package com.SPM.backend.IT20122096.TripPlaning.Service;
 
+import com.SPM.backend.IT20122096.Places.Entity.Place;
+import com.SPM.backend.IT20122096.Places.Repository.PlaceRepository;
 import com.SPM.backend.IT20122096.Transport.Entity.Transport;
 import com.SPM.backend.IT20122096.Transport.Repository.TransportRepository;
 import com.SPM.backend.IT20122096.TravelPackage.Entity.TravelPackage;
@@ -33,14 +35,16 @@ public class TripPlanServiceImpl implements TripPlanService {
     private final TransportRepository transportRepository;
     private final TravelPackageService travelPackageService;
     private final TravelPackageRepository travelPackageRepository;
+    private final PlaceRepository placeRepository;
 
-    public TripPlanServiceImpl(TripPlanRepository tripPlanRepository, HotelRepository hotelRepository, PaymentRepository paymentRepository, TransportRepository transportRepository, TravelPackageService travelPackageService, TravelPackageRepository travelPackageRepository) {
+    public TripPlanServiceImpl(TripPlanRepository tripPlanRepository, HotelRepository hotelRepository, PaymentRepository paymentRepository, TransportRepository transportRepository, TravelPackageService travelPackageService, TravelPackageRepository travelPackageRepository, PlaceRepository placeRepository) {
         this.tripPlanRepository = tripPlanRepository;
         this.hotelRepository = hotelRepository;
         this.paymentRepository = paymentRepository;
         this.transportRepository = transportRepository;
         this.travelPackageService = travelPackageService;
         this.travelPackageRepository = travelPackageRepository;
+        this.placeRepository = placeRepository;
     }
 
     @Override
@@ -88,6 +92,10 @@ public class TripPlanServiceImpl implements TripPlanService {
             tripPlan.getTransportation().setImage(transport.getImageURL());
             tripPlan.getTransportation().setName(transport.getName());
 
+            Place place =placeRepository.findById(tripPlan.getPlace().getId()).get();
+            tripPlan.getPlace().setName(place.getName());
+            tripPlan.getPlace().setImage(place.getImageURL());
+
             fullTripPlan.add(tripPlan);
         }
 
@@ -109,6 +117,10 @@ public class TripPlanServiceImpl implements TripPlanService {
             Transport transport = transportRepository.findById(tripPlan.getTransportation().getId()).get();
             tripPlan.getTransportation().setImage(transport.getImageURL());
             tripPlan.getTransportation().setName(transport.getName());
+
+            Place place =placeRepository.findById(tripPlan.getPlace().getId()).get();
+            tripPlan.getPlace().setName(place.getName());
+            tripPlan.getPlace().setImage(place.getImageURL());
 
             fullTripPlan.add(tripPlan);
         }
@@ -161,6 +173,14 @@ public class TripPlanServiceImpl implements TripPlanService {
         Hotel hotel = hotelRepository.findById(tripPlan.getAccommodation().getId()).get();
         tripPlan.getAccommodation().setImage(hotel.getImageURL());
         tripPlan.getAccommodation().setName(hotel.getName());
+
+        Transport transport = transportRepository.findById(tripPlan.getTransportation().getId()).get();
+        tripPlan.getTransportation().setImage(transport.getImageURL());
+        tripPlan.getTransportation().setName(transport.getName());
+
+        Place place =placeRepository.findById(tripPlan.getPlace().getId()).get();
+        tripPlan.getPlace().setName(place.getName());
+        tripPlan.getPlace().setImage(place.getImageURL());
 
         return new ResponseEntity(tripPlan, HttpStatus.OK);
 

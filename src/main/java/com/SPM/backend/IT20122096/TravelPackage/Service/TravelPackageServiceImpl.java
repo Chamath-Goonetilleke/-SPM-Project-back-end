@@ -1,5 +1,7 @@
 package com.SPM.backend.IT20122096.TravelPackage.Service;
 
+import com.SPM.backend.IT20122096.Places.Entity.Place;
+import com.SPM.backend.IT20122096.Places.Repository.PlaceRepository;
 import com.SPM.backend.IT20122096.Transport.Entity.Transport;
 import com.SPM.backend.IT20122096.Transport.Repository.TransportRepository;
 import com.SPM.backend.IT20122096.TravelPackage.DTO.TravelPackageDTO;
@@ -22,11 +24,13 @@ public class TravelPackageServiceImpl implements TravelPackageService{
     private final TravelPackageRepository travelPackageRepository;
     private final HotelRepository hotelRepository;
     private final TransportRepository transportRepository;
+    private final PlaceRepository placeRepository;
 
-    public TravelPackageServiceImpl(TravelPackageRepository travelPackageRepository, HotelRepository hotelRepository, TransportRepository transportRepository) {
+    public TravelPackageServiceImpl(TravelPackageRepository travelPackageRepository, HotelRepository hotelRepository, TransportRepository transportRepository, PlaceRepository placeRepository) {
         this.travelPackageRepository = travelPackageRepository;
         this.hotelRepository = hotelRepository;
         this.transportRepository = transportRepository;
+        this.placeRepository = placeRepository;
     }
 
     @Override
@@ -71,6 +75,10 @@ public class TravelPackageServiceImpl implements TravelPackageService{
             Tpackage.getTransportation().setImage(transport.getImageURL());
             Tpackage.getTransportation().setName(transport.getName());
 
+            Place place =placeRepository.findById(Tpackage.getPlace().getId()).get();
+            Tpackage.getPlace().setName(place.getName());
+            Tpackage.getPlace().setImage(place.getImageURL());
+
             fullTravelPackage.add(Tpackage);
         }
         return new ResponseEntity(fullTravelPackage,HttpStatus.OK);
@@ -87,6 +95,11 @@ public class TravelPackageServiceImpl implements TravelPackageService{
         Transport transport = transportRepository.findById(travelPackage.getTransportation().getId()).get();
         travelPackage.getTransportation().setImage(transport.getImageURL());
         travelPackage.getTransportation().setName(transport.getName());
+
+        Place place =placeRepository.findById(travelPackage.getPlace().getId()).get();
+        travelPackage.getPlace().setName(place.getName());
+        travelPackage.getPlace().setImage(place.getImageURL());
+
         return new ResponseEntity(travelPackage,HttpStatus.OK);
     }
 
