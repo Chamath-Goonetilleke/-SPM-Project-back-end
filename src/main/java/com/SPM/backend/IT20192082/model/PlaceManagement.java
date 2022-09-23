@@ -1,4 +1,4 @@
-package com.SPM.backend.model;
+package com.SPM.backend.IT20192082.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

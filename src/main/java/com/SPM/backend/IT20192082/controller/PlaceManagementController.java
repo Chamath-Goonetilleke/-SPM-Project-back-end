@@ -1,7 +1,7 @@
-package com.SPM.backend.controller;
+package com.SPM.backend.IT20192082.controller;
 
-import com.SPM.backend.model.PlaceManagement;
-import com.SPM.backend.repository.PlaceManagementRepository;
+import com.SPM.backend.IT20192082.model.PlaceManagement;
+import com.SPM.backend.IT20192082.repository.PlaceManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

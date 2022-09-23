@@ -1,6 +1,6 @@
-package com.SPM.backend.repository;
+package com.SPM.backend.IT20192082.repository;
 
-import com.SPM.backend.model.PlaceManagement;
+import com.SPM.backend.IT20192082.model.PlaceManagement;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
