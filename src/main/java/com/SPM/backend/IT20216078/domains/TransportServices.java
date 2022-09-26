@@ -1,4 +1,4 @@
-package com.SPM.domains;
+package com.SPM.backend.IT20216078.domains;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

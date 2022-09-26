@@ -1,6 +1,6 @@
-package com.SPM.repository;
+package com.SPM.backend.IT20216078.repository;
 
-import com.SPM.domains.TransportServices;
+import com.SPM.backend.IT20216078.domains.TransportServices;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
