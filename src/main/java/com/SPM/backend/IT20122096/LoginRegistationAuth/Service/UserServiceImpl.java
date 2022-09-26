@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public ResponseEntity getUserById(ObjectId id) {
         com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User user = userRepository.findById(id).get();
+
         return new ResponseEntity(user, HttpStatus.OK);
     }
 
