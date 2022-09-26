@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/api/v1")
+
 public class UserController extends BaseController {
     private final UserRepository userRepository;
     private final JWTUtility jwtUtility;
@@ -35,6 +37,7 @@ public class UserController extends BaseController {
     @PostMapping("/auth")
     public JWTResponse authenticate(@RequestBody JWTRequest jwtRequest) throws Exception {
         try {
+            System.out.println("hvh");
             User user = new User();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

@@ -1,7 +1,7 @@
-package com.SPM.services;
+package com.SPM.backend.IT20216078.services;
 
-import com.SPM.domains.TransportServices;
-import com.SPM.repository.TransportServicesRepository;
+import com.SPM.backend.IT20216078.domains.TransportServices;
+import com.SPM.backend.IT20216078.repository.TransportServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ServiceTransportServices {
+    @Autowired
     TransportServicesRepository transportServicesRepository;
 
     @Autowired
