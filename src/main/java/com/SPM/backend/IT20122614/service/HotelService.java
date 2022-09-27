@@ -29,14 +29,15 @@ public class HotelService {
         return hotelRepository.findAll();
     }
     public Hotel getHotelsById(String name){
+        System.out.println(name);
         Hotel hotels = hotelRepository.findHotelById(name);
         return hotels;
     }
 
     public void updateHotelDetails(String id, Hotel hotel) {
 //        Criteria criteria = Criteria.where("id").in(id);
-        Query query = new Query();
-        query.addCriteria(Criteria.where("_id").is(id));
+//        Query query = new Query();
+//        query.addCriteria(Criteria.where("_id").is(id));
         Hotel hotelOne = hotelRepository.findHotelById(id);
         hotelOne.setName(hotel.getName());
         hotelOne.setType(hotel.getType());
