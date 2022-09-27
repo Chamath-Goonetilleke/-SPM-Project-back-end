@@ -58,7 +58,7 @@ public class TransportServicesController {
         }
     }
 
-    @PutMapping("/approve")
+    @PostMapping("/approve")
     public ResponseEntity<TransportServices> approveTransportService(@RequestParam String id) {
         try {
             return new ResponseEntity<>(serviceTransportServices.approveTransportService(id), HttpStatus.OK);
@@ -68,7 +68,7 @@ public class TransportServicesController {
         }
     }
 
-    @PutMapping("/decline")
+    @PostMapping("/decline")
     public ResponseEntity<TransportServices> declineTransportService(@RequestParam String id) {
         try {
             serviceTransportServices.declineTransportService(id);
