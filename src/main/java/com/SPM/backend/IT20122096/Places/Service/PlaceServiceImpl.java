@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PlaceServiceImpl implements PlaceService{
@@ -54,7 +55,11 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     public ResponseEntity getPlaceById(ObjectId id) {
-        Place place = placeRepository.findById(id).get();
-        return new ResponseEntity(place, HttpStatus.OK);
+        Optional<Place> place = placeRepository.findById(id);
+        if(place.isPresent()){
+            return new ResponseEntity(place.get(), HttpStatus.OK);
+
+        }
+        return new ResponseEntity("Place dose not exist", HttpStatus.BAD_REQUEST);
     }
 }

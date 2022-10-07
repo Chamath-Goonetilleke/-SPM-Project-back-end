@@ -37,7 +37,7 @@ public class TripPlanController extends BaseController {
     }
 
     @PostMapping("/tripPlan/save")
-    public ResponseEntity saveTripPlan(@RequestBody TripPlan tripPlan) {
+    public ResponseEntity saveTripPlan(@RequestBody TripPlanDTO tripPlan) {
         return tripPlanService.saveTripPlan(tripPlan);
     }
 

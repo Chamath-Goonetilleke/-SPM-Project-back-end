@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TransportServiceImpl implements TransportService{
@@ -50,7 +51,10 @@ public class TransportServiceImpl implements TransportService{
 
     @Override
     public ResponseEntity getTransportService(ObjectId id) {
-        Transport transport = transportRepository.findById(id).get();
-        return new ResponseEntity(transport,HttpStatus.OK);
+        Optional<Transport> transport = transportRepository.findById(id);
+        if(transport.isPresent()){
+            return new ResponseEntity(transport,HttpStatus.OK);
+        }
+        return new ResponseEntity("Transport dose not exist", HttpStatus.BAD_REQUEST);
     }
 }

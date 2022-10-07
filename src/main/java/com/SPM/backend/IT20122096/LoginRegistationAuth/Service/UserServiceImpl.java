@@ -11,12 +11,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -44,9 +43,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public ResponseEntity getUserById(ObjectId id) {
-        com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User user = userRepository.findById(id).get();
+        Optional<com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User> user = userRepository.findById(id);
+        if (user.isPresent()) {
 
-        return new ResponseEntity(user, HttpStatus.OK);
+            return new ResponseEntity(user.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity("User dose not exist", HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -55,7 +57,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         return user.getId().toHexString();
     }
-
 
 
     @Override
@@ -83,22 +84,25 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public ResponseEntity updateUser(UserUpdateDTO userDTO) {
 
-        com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User user = userRepository.findById(userDTO.getId()).get();
+        Optional<com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User> user1 = userRepository.findById(userDTO.getId());
+        if(user1.isPresent()){
+            com.SPM.backend.IT20122096.LoginRegistationAuth.Entity.User user = user1.get();
+            if (userDTO.getCurrentPassword() != null && !(user.isPasswordMatch(userDTO.getCurrentPassword(), user.getPassword()))) {
+                return new ResponseEntity("Wrong Password", HttpStatus.BAD_REQUEST);
+            }
 
-        if(userDTO.getCurrentPassword()!=null && !(user.isPasswordMatch(userDTO.getCurrentPassword(),user.getPassword()))){
-            return new ResponseEntity("Wrong Password", HttpStatus.BAD_REQUEST);
+            user.setName(userDTO.getName());
+            user.setAddress(userDTO.getAddress());
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+            user.setImage(userDTO.getImage());
+
+            if (userDTO.getPassword() != null) {
+                String encodedPassword = user.passwordEncoder(userDTO.getPassword());
+                user.setPassword(encodedPassword);
+            }
+
+            return new ResponseEntity(userRepository.save(user), HttpStatus.OK);
         }
-
-        user.setName(userDTO.getName());
-        user.setAddress(userDTO.getAddress());
-        user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setImage(userDTO.getImage());
-
-        if(userDTO.getPassword()!=null){
-            String encodedPassword = user.passwordEncoder(userDTO.getPassword());
-            user.setPassword(encodedPassword);
-        }
-
-        return new ResponseEntity(userRepository.save(user), HttpStatus.OK);
+        return new ResponseEntity("User dose not exist", HttpStatus.BAD_REQUEST);
     }
 }

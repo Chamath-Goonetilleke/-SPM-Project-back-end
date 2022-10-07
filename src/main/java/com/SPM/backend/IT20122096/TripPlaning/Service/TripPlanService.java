@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface TripPlanService {
 
-    ResponseEntity saveTripPlan(TripPlan tripPlan);
+    ResponseEntity saveTripPlan(TripPlanDTO tripPlan);
 
     ResponseEntity getAllTripPlans(ObjectId userId);
     ResponseEntity getAllBookings(ObjectId userId);
