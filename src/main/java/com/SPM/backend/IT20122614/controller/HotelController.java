@@ -25,7 +25,6 @@ public class HotelController {
 
     @PostMapping("/add-new")
     public ResponseEntity<?> addNewHotel(@RequestBody Hotel hotel){
-        System.out.println("testttttttttttt" + hotel.getAddress());
 
         try{
             hotelService.addNewHotel(hotel);
@@ -44,7 +43,6 @@ public class HotelController {
     }
     @PostMapping("/add")
     public ResponseEntity<?> addExpense(@RequestBody Expense expense){
-//        System.out.println("vnjccccccccccccccccccccccccccccccccccccccd");
         expenseService.addExpense(expense);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
