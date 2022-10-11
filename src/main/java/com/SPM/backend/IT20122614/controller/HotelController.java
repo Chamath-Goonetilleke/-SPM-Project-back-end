@@ -1,11 +1,11 @@
 package com.SPM.backend.IT20122614.controller;
 
-import com.SPM.backend.IT20122614.DTO.HotelDTO;
+
 import com.SPM.backend.IT20122614.model.Expense;
 import com.SPM.backend.IT20122614.model.Hotel;
 import com.SPM.backend.IT20122614.service.ExpenseService;
 import com.SPM.backend.IT20122614.service.HotelService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
