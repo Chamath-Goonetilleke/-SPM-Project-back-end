@@ -10,30 +10,34 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TravelPackageController extends BaseController {
 
-    private TravelPackageService travelPackageService;
+    private final TravelPackageService travelPackageService;
 
     public TravelPackageController(TravelPackageService travelPackageService) {
         this.travelPackageService = travelPackageService;
     }
 
     @PostMapping("/travelPackage/save")
-    ResponseEntity saveNewPackage(@RequestBody TravelPackageDTO travelPackageDTO){
+    ResponseEntity<?> saveNewPackage(@RequestBody TravelPackageDTO travelPackageDTO) {
         return travelPackageService.saveNewPackage(travelPackageDTO);
     }
+
     @PostMapping("/travelPackage/update")
-    ResponseEntity updatePackage(@RequestBody TravelPackageDTO travelPackageDTO){
+    ResponseEntity<?> updatePackage(@RequestBody TravelPackageDTO travelPackageDTO) {
         return travelPackageService.updatePackage(travelPackageDTO);
     }
+
     @GetMapping("/travelPackage/getAll")
-    ResponseEntity getAllPackages(){
+    ResponseEntity<?> getAllPackages() {
         return travelPackageService.getAllPackages();
     }
+
     @GetMapping("/travelPackage/{id}")
-    ResponseEntity getPackageById(@PathVariable ObjectId id){
+    ResponseEntity<?> getPackageById(@PathVariable ObjectId id) {
         return travelPackageService.getPackageById(id);
     }
+
     @GetMapping("/travelPackage/delete/{id}")
-    ResponseEntity deletePackageById(@PathVariable ObjectId id){
+    ResponseEntity<?> deletePackageById(@PathVariable ObjectId id) {
         return travelPackageService.deletePackageById(id);
     }
 

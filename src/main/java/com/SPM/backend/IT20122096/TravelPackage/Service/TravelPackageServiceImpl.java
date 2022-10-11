@@ -10,13 +10,13 @@ import com.SPM.backend.IT20122096.TravelPackage.Repository.TravelPackageReposito
 import com.SPM.backend.IT20122614.model.Hotel;
 import com.SPM.backend.IT20122614.repository.HotelRepository;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TravelPackageServiceImpl implements TravelPackageService{
@@ -34,7 +34,7 @@ public class TravelPackageServiceImpl implements TravelPackageService{
     }
 
     @Override
-    public ResponseEntity saveNewPackage(TravelPackageDTO travelPackageDTO) {
+    public ResponseEntity<?> saveNewPackage(TravelPackageDTO travelPackageDTO) {
 
         TravelPackage travelPackage = new TravelPackage();
         travelPackage.setName(travelPackageDTO.getName());
@@ -46,66 +46,87 @@ public class TravelPackageServiceImpl implements TravelPackageService{
         travelPackage.setTotalCost(travelPackageDTO.getTotalCost());
         travelPackage.setDiscount(travelPackageDTO.getDiscount());
 
-        return new ResponseEntity(travelPackageRepository.save(travelPackage), HttpStatus.OK);
+        return new ResponseEntity<>(travelPackageRepository.save(travelPackage), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity updatePackage(TravelPackageDTO travelPackageDTO) {
+    public ResponseEntity<?> updatePackage(TravelPackageDTO travelPackageDTO) {
 
-        TravelPackage travelPackage = travelPackageRepository.findById(travelPackageDTO.getId()).get();
-        travelPackage.setName(travelPackageDTO.getName());
-        travelPackage.setType(travelPackageDTO.getType());
-        travelPackage.setNoOfDays(travelPackageDTO.getNoOfDays());
+        Optional<TravelPackage> travelPackage1 = travelPackageRepository.findById(travelPackageDTO.getId());
+        if(travelPackage1.isPresent()){
+            TravelPackage travelPackage = travelPackage1.get();
+            travelPackage.setName(travelPackageDTO.getName());
+            travelPackage.setType(travelPackageDTO.getType());
+            travelPackage.setNoOfDays(travelPackageDTO.getNoOfDays());
+            return new ResponseEntity<>(travelPackageRepository.save(travelPackage), HttpStatus.OK);
 
-        return new ResponseEntity(travelPackageRepository.save(travelPackage), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Package dose not exist", HttpStatus.BAD_REQUEST);
     }
 
     @Override
-    public ResponseEntity getAllPackages() {
+    public ResponseEntity<?> getAllPackages() {
         List<TravelPackage> travelPackages = travelPackageRepository.findAll();
         List<TravelPackage> fullTravelPackage = new ArrayList<>();
         for (TravelPackage travelPackage:travelPackages
         ) {
             TravelPackage Tpackage = travelPackage;
-            Hotel hotel = hotelRepository.findById(Tpackage.getAccommodation().getId()).get();
-            Tpackage.getAccommodation().setImage(hotel.getImageURL());
-            Tpackage.getAccommodation().setName(hotel.getName());
+            Optional<Hotel> hotel = hotelRepository.findById(travelPackage.getAccommodation().getId());
+            if (hotel.isPresent()){
+                Tpackage.getAccommodation().setImage(hotel.get().getImageURL());
+                Tpackage.getAccommodation().setName(hotel.get().getName());
+            }
 
-            Transport transport = transportRepository.findById(Tpackage.getTransportation().getId()).get();
-            Tpackage.getTransportation().setImage(transport.getImageURL());
-            Tpackage.getTransportation().setName(transport.getName());
+            Optional<Transport> transport = transportRepository.findById(travelPackage.getTransportation().getId());
+            if (transport.isPresent()){
+                Tpackage.getTransportation().setImage(transport.get().getImageURL());
+                Tpackage.getTransportation().setName(transport.get().getName());
+            }
 
-            Place place =placeRepository.findById(Tpackage.getPlace().getId()).get();
-            Tpackage.getPlace().setName(place.getName());
-            Tpackage.getPlace().setImage(place.getImageURL());
+            Optional<Place> place =placeRepository.findById(travelPackage.getPlace().getId());
+            if (place.isPresent()){
+                Tpackage.getPlace().setName(place.get().getName());
+                Tpackage.getPlace().setImage(place.get().getImageURL());
+            }
 
             fullTravelPackage.add(Tpackage);
         }
-        return new ResponseEntity(fullTravelPackage,HttpStatus.OK);
+        return new ResponseEntity<>(fullTravelPackage,HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getPackageById(ObjectId id) {
-        TravelPackage travelPackage = travelPackageRepository.findById(id).get();
+    public ResponseEntity<?> getPackageById(ObjectId id) {
+        Optional<TravelPackage> travelPackage1 = travelPackageRepository.findById(id);
+        if (travelPackage1.isPresent()){
+            TravelPackage travelPackage = travelPackage1.get();
+            Optional<Hotel> hotel = hotelRepository.findById(travelPackage.getAccommodation().getId());
+            if (hotel.isPresent()){
+                travelPackage.getAccommodation().setImage(hotel.get().getImageURL());
+                travelPackage.getAccommodation().setName(hotel.get().getName());
+            }
 
-        Hotel hotel = hotelRepository.findById(travelPackage.getAccommodation().getId()).get();
-        travelPackage.getAccommodation().setImage(hotel.getImageURL());
-        travelPackage.getAccommodation().setName(hotel.getName());
+            Optional<Transport> transport = transportRepository.findById(travelPackage.getTransportation().getId());
+            if (transport.isPresent()){
+                travelPackage.getTransportation().setImage(transport.get().getImageURL());
+                travelPackage.getTransportation().setName(transport.get().getName());
+            }
 
-        Transport transport = transportRepository.findById(travelPackage.getTransportation().getId()).get();
-        travelPackage.getTransportation().setImage(transport.getImageURL());
-        travelPackage.getTransportation().setName(transport.getName());
+            Optional<Place> place =placeRepository.findById(travelPackage.getPlace().getId());
+            if (place.isPresent()){
+                travelPackage.getPlace().setName(place.get().getName());
+                travelPackage.getPlace().setImage(place.get().getImageURL());
+            }
 
-        Place place =placeRepository.findById(travelPackage.getPlace().getId()).get();
-        travelPackage.getPlace().setName(place.getName());
-        travelPackage.getPlace().setImage(place.getImageURL());
+            return new ResponseEntity<>(travelPackage,HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Package dose not exist", HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity(travelPackage,HttpStatus.OK);
+
     }
 
     @Override
-    public ResponseEntity deletePackageById(ObjectId id) {
+    public ResponseEntity<?> deletePackageById(ObjectId id) {
         travelPackageRepository.deleteById(id);
-        return new ResponseEntity("Deleted Successfully",HttpStatus.OK);
+        return new ResponseEntity<>("Deleted Successfully",HttpStatus.OK);
     }
 }

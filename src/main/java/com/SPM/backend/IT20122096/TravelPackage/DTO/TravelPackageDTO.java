@@ -3,12 +3,13 @@ package com.SPM.backend.IT20122096.TravelPackage.DTO;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Accommodation;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Place;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Transportation;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.bson.types.ObjectId;
 
-@Data
+@Getter
+@Setter
 public class TravelPackageDTO {
     private ObjectId id;
     private String name;

@@ -1,14 +1,13 @@
 package com.SPM.backend.IT20122096.Places.Entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.bson.types.ObjectId;
 
 import javax.persistence.Id;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Place {
@@ -21,4 +20,3 @@ public class Place {
     private String imageURL;
     private List<VisitingPlace> visitingPlaces;
 }
-;

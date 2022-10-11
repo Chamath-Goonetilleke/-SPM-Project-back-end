@@ -3,12 +3,11 @@ package com.SPM.backend.IT20122096.TripPlaning.DTO;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Accommodation;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Place;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Transportation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.bson.types.ObjectId;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TripPlanDTO {

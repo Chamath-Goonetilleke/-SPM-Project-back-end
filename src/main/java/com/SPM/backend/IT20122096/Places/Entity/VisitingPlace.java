@@ -1,8 +1,11 @@
 package com.SPM.backend.IT20122096.Places.Entity;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class VisitingPlace {
     private Long id ;
     private String name;
