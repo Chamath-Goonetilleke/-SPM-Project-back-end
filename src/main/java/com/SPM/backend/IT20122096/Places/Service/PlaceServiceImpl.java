@@ -23,7 +23,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public ResponseEntity savePlace(PlaceDTO placeDTO) {
+    public ResponseEntity<?> savePlace(PlaceDTO placeDTO) {
         Place place = new Place();
 
         place.setName(placeDTO.getName());
@@ -33,7 +33,7 @@ public class PlaceServiceImpl implements PlaceService{
         place.setImageURL(placeDTO.getImageURL());
 
         List<VisitingPlace> visitingPlaces = new ArrayList<>();
-        Long count = 0L;
+        long count = 0L;
         for (VisitingPlace vPlace: placeDTO.getVisitingPlaces()) {
 
             VisitingPlace visitingPlace = new VisitingPlace();
@@ -45,21 +45,21 @@ public class PlaceServiceImpl implements PlaceService{
             visitingPlaces.add(visitingPlace);
         }
         place.setVisitingPlaces(visitingPlaces);
-        return new ResponseEntity(placeRepository.save(place), HttpStatus.OK);
+        return new ResponseEntity<>(placeRepository.save(place), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getAllPlaces() {
-        return new ResponseEntity(placeRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<?> getAllPlaces() {
+        return new ResponseEntity<>(placeRepository.findAll(), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getPlaceById(ObjectId id) {
+    public ResponseEntity<?> getPlaceById(ObjectId id) {
         Optional<Place> place = placeRepository.findById(id);
         if(place.isPresent()){
-            return new ResponseEntity(place.get(), HttpStatus.OK);
+            return new ResponseEntity<>(place.get(), HttpStatus.OK);
 
         }
-        return new ResponseEntity("Place dose not exist", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Place dose not exist", HttpStatus.BAD_REQUEST);
     }
 }

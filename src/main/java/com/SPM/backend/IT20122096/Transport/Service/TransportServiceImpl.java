@@ -16,14 +16,14 @@ import java.util.Optional;
 @Component
 public class TransportServiceImpl implements TransportService{
 
-    private TransportRepository transportRepository;
+    private final TransportRepository transportRepository;
 
     public TransportServiceImpl(TransportRepository transportRepository) {
         this.transportRepository = transportRepository;
     }
 
     @Override
-    public ResponseEntity saveTransportService(TransportDTO transportDTO) {
+    public ResponseEntity<?> saveTransportService(TransportDTO transportDTO) {
 
         Transport transport = new Transport();
 
@@ -41,20 +41,20 @@ public class TransportServiceImpl implements TransportService{
 
         transport.setVehicles(vehicles);
 
-        return new ResponseEntity(transportRepository.save(transport), HttpStatus.OK);
+        return new ResponseEntity<>(transportRepository.save(transport), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getAllTransportServices() {
-        return new ResponseEntity(transportRepository.findAll(),HttpStatus.OK);
+    public ResponseEntity<?> getAllTransportServices() {
+        return new ResponseEntity<>(transportRepository.findAll(),HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getTransportService(ObjectId id) {
+    public ResponseEntity<?> getTransportService(ObjectId id) {
         Optional<Transport> transport = transportRepository.findById(id);
         if(transport.isPresent()){
-            return new ResponseEntity(transport,HttpStatus.OK);
+            return new ResponseEntity<>(transport,HttpStatus.OK);
         }
-        return new ResponseEntity("Transport dose not exist", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Transport dose not exist", HttpStatus.BAD_REQUEST);
     }
 }

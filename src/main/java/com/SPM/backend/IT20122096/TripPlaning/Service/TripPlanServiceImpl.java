@@ -47,7 +47,7 @@ public class TripPlanServiceImpl implements TripPlanService {
     }
 
     @Override
-    public ResponseEntity saveTripPlan(TripPlanDTO tripPlanDTO) {
+    public ResponseEntity<?> saveTripPlan(TripPlanDTO tripPlanDTO) {
 
         TripPlan tripPlan = new TripPlan();
         tripPlan.setUserId(tripPlanDTO.getUserId());
@@ -61,72 +61,71 @@ public class TripPlanServiceImpl implements TripPlanService {
         tripPlan.setTotalCost(tripPlanDTO.getTotalCost());
         tripPlan.setBooked(false);
 
-    return new ResponseEntity(tripPlanRepository.save(tripPlan), HttpStatus.OK);
+    return new ResponseEntity<>(tripPlanRepository.save(tripPlan), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getAllTripPlans(ObjectId userId) {
+    public ResponseEntity<?> getAllTripPlans(ObjectId userId) {
         List<TripPlan> tripPlans = tripPlanRepository.getTripPlanByUserId(userId);
 
         List<TripPlan> fullTripPlan = new ArrayList<>();
         for (TripPlan plan : tripPlans
         ) {
-            TripPlan tripPlan = plan;
             Optional<Hotel> hotel = hotelRepository.findById(plan.getAccommodation().getId());
             if (hotel.isPresent()){
-                tripPlan.getAccommodation().setImage(hotel.get().getImageURL());
-                tripPlan.getAccommodation().setName(hotel.get().getName());
+                plan.getAccommodation().setImage(hotel.get().getImageURL());
+                plan.getAccommodation().setName(hotel.get().getName());
             }
 
             Optional<Transport> transport = transportRepository.findById(plan.getTransportation().getId());
             if (transport.isPresent()){
-                tripPlan.getTransportation().setImage(transport.get().getImageURL());
-                tripPlan.getTransportation().setName(transport.get().getName());
+                plan.getTransportation().setImage(transport.get().getImageURL());
+                plan.getTransportation().setName(transport.get().getName());
             }
 
             Optional<Place> place =placeRepository.findById(plan.getPlace().getId());
             if (place.isPresent()){
-                tripPlan.getPlace().setName(place.get().getName());
-                tripPlan.getPlace().setImage(place.get().getImageURL());
+                plan.getPlace().setName(place.get().getName());
+                plan.getPlace().setImage(place.get().getImageURL());
             }
 
-            fullTripPlan.add(tripPlan);
+            fullTripPlan.add(plan);
         }
 
-        return new ResponseEntity(fullTripPlan, HttpStatus.OK);
+        return new ResponseEntity<>(fullTripPlan, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getAllBookings(ObjectId userId) {
+    public ResponseEntity<?> getAllBookings(ObjectId userId) {
         List<TripPlan> tripPlans = tripPlanRepository.getBookedTripPlanByUserId(userId);
 
         List<TripPlan> fullTripPlan = new ArrayList<>();
         for (TripPlan plan : tripPlans
         ) {
-            TripPlan tripPlan = plan;
             Optional<Hotel> hotel = hotelRepository.findById(plan.getAccommodation().getId());
             if (hotel.isPresent()){
-                tripPlan.getAccommodation().setImage(hotel.get().getImageURL());
-                tripPlan.getAccommodation().setName(hotel.get().getName());
+                plan.getAccommodation().setImage(hotel.get().getImageURL());
+                plan.getAccommodation().setName(hotel.get().getName());
             }
 
             Optional<Transport> transport = transportRepository.findById(plan.getTransportation().getId());
             if (transport.isPresent()){
-                tripPlan.getTransportation().setImage(transport.get().getImageURL());
-                tripPlan.getTransportation().setName(transport.get().getName());
+                plan.getTransportation().setImage(transport.get().getImageURL());
+                plan.getTransportation().setName(transport.get().getName());
             }
 
             Optional<Place> place =placeRepository.findById(plan.getPlace().getId());
             if (place.isPresent()){
-                tripPlan.getPlace().setName(place.get().getName());
-                tripPlan.getPlace().setImage(place.get().getImageURL());
+                plan.getPlace().setName(place.get().getName());
+                plan.getPlace().setImage(place.get().getImageURL());
             }
 
-            fullTripPlan.add(tripPlan);
+            fullTripPlan.add(plan);
         }
         List<Payment> payments = paymentRepository.getPaymentByUserId(userId);
         List<TravelPackage> travelPackages = (List<TravelPackage>) travelPackageService.getAllPackages().getBody();
         List<TravelPackage> bookedPackages = new ArrayList<>();
+        assert travelPackages != null;
         for (TravelPackage travelPackage:travelPackages
              ) {
             for (Payment payment:payments
@@ -139,11 +138,11 @@ public class TripPlanServiceImpl implements TripPlanService {
         BookingsDTO bookingsDTO = new BookingsDTO(fullTripPlan,bookedPackages);
 
 
-        return new ResponseEntity(bookingsDTO, HttpStatus.OK);
+        return new ResponseEntity<>(bookingsDTO, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getAllPayments(ObjectId userId) {
+    public ResponseEntity<?> getAllPayments(ObjectId userId) {
         List<Payment> payments = paymentRepository.getPaymentByUserId(userId);
         List<PaymentResponseDTO> paymentDTOS = new ArrayList<>();
         for (Payment payment: payments
@@ -163,11 +162,11 @@ public class TripPlanServiceImpl implements TripPlanService {
             }
             paymentDTOS.add(paymentResponseDTO);
         }
-        return new ResponseEntity(paymentDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(paymentDTOS, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity getTripPlanById(ObjectId tripId) {
+    public ResponseEntity<?> getTripPlanById(ObjectId tripId) {
         Optional<TripPlan> tripPlan1 = tripPlanRepository.findById(tripId);
         if (tripPlan1.isPresent()){
             TripPlan tripPlan = tripPlan1.get();
@@ -189,25 +188,20 @@ public class TripPlanServiceImpl implements TripPlanService {
                 tripPlan.getPlace().setImage(place.get().getImageURL());
             }
 
-            return new ResponseEntity(tripPlan, HttpStatus.OK);
+            return new ResponseEntity<>(tripPlan, HttpStatus.OK);
         }
-        return new ResponseEntity("Plan dose not exist", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Plan dose not exist", HttpStatus.BAD_REQUEST);
 
     }
 
     @Override
-    public ResponseEntity updateTripPlanById(ObjectId tripId) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity deleteTripPlanById(ObjectId tripId) {
+    public ResponseEntity<?> deleteTripPlanById(ObjectId tripId) {
         tripPlanRepository.deleteById(tripId);
-        return new ResponseEntity("Deleted Successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Deleted Successfully", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity payForTripPlan(PaymentDTO paymentDTO) {
+    public ResponseEntity<?> payForTripPlan(PaymentDTO paymentDTO) {
         Payment payment = new Payment();
         payment.setTripPlanId(paymentDTO.getTripPlanId());
         payment.setAmount(paymentDTO.getAmount());
@@ -225,6 +219,6 @@ public class TripPlanServiceImpl implements TripPlanService {
             }
         }
 
-        return new ResponseEntity("Payment Success", HttpStatus.OK);
+        return new ResponseEntity<>("Payment Success", HttpStatus.OK);
     }
 }

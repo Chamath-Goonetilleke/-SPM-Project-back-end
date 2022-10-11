@@ -17,15 +17,15 @@ public class TransportController extends BaseController {
     }
 
     @PostMapping("/transport/save")
-    ResponseEntity saveTransportService(@RequestBody TransportDTO transportDTO){
+    ResponseEntity<?> saveTransportService(@RequestBody TransportDTO transportDTO){
         return  transportService.saveTransportService(transportDTO);
     }
     @GetMapping("/transport/getAll")
-    ResponseEntity getAllTransportServices(){
+    ResponseEntity<?> getAllTransportServices(){
         return transportService.getAllTransportServices();
     }
     @GetMapping("/transport/{id}")
-    ResponseEntity getTransportService(@PathVariable ObjectId id){
+    ResponseEntity<?> getTransportService(@PathVariable ObjectId id){
         return transportService.getTransportService(id);
     }
 

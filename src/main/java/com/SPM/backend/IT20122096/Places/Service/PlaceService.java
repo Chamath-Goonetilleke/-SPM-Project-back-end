@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface PlaceService {
 
-    ResponseEntity savePlace(PlaceDTO placeDTO);
-    ResponseEntity getAllPlaces();
-    ResponseEntity getPlaceById(ObjectId id);
+    ResponseEntity<?> savePlace(PlaceDTO placeDTO);
+    ResponseEntity<?> getAllPlaces();
+    ResponseEntity<?> getPlaceById(ObjectId id);
 }

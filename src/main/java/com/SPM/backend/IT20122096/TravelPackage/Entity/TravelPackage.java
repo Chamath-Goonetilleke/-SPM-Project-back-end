@@ -3,15 +3,14 @@ package com.SPM.backend.IT20122096.TravelPackage.Entity;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Accommodation;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Place;
 import com.SPM.backend.IT20122096.TripPlaning.Entity.Transportation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
